@@ -1,0 +1,60 @@
+[
+  {
+    "bizAlias": "",
+    "componentType": "TextField",
+    "extValue": null,
+    "id": "TextField_VQQ6H63X5DC0",
+    "name": "基本信息编号（自动填充）",
+    "value": "2026020600000007"
+  },
+  {
+    "bizAlias": "",
+    "componentType": "TextNote",
+    "extValue": null,
+    "id": "TextNote_3R004UM3Z8Q0",
+    "name": null,
+    "value": "注意：\n1，编制200字申报内容；\n2，按照项目信息及申报内容填报重大项目库。"
+  },
+  { "bizAlias": "", "componentType": "DDAttachment", "extValue": null, "id": "DDAttachment_RY56L32ZIA80", "name": "指导文件", "value": null },
+  {
+    "bizAlias": "",
+    "componentType": "DDSelectField",
+    "extValue": "{\"label\":\"是\",\"key\":\"option_0\"}",
+    "id": "DDSelectField_1U5YKCRVRZ1C",
+    "name": "200字是否填报",
+    "value": "是"
+  },
+  { "bizAlias": "", "componentType": "TextField", "extValue": null, "id": "TextField_13RRR9LZCJWG0", "name": "填写项目赋码", "value": "问问" },
+  {
+    "bizAlias": "",
+    "componentType": "DDPhotoField",
+    "extValue": null,
+    "id": "DDPhotoField_1G374VS4JCIO0",
+    "name": "上传重大项目库截图",
+    "value": "[\"https://static.dingtalk.com/media/lQDPD37BCJhKPYXND_HNHFiw4yIfmyked3sJXhakG_AgAA_7256_4081.jpg\"]"
+  },
+  {
+    "bizAlias": "",
+    "componentType": "TextNote",
+    "extValue": null,
+    "id": "TextNote_GIE7QETEZ7S0",
+    "name": null,
+    "value": "以下表单由设计中心/战略服务中心审批时填写"
+  },
+  {
+    "bizAlias": "",
+    "componentType": "TableField",
+    "extValue": "{\"statValue\":[{\"id\":\"MoneyField_227VFO9LLYJK0\",\"label\":\"总投资（元）\",\"upper\":\"壹仟壹佰壹拾壹元整\",\"num\":\"1111\"},{\"id\":\"MoneyField_1KPKELOQSQ1S0\",\"label\":\"总拟申请资金额度（元）\",\"upper\":\"壹仟壹佰壹拾壹元整\",\"num\":\"1111\"}],\"componentName\":\"TableField\"}",
+    "id": "TableField_1EJS235ES38G0",
+    "name": "正在申报项目信息",
+    "value": "[{\"rowValue\":[{\"label\":\"区县名称\",\"extendValue\":{\"province\":{\"name\":\"北京\",\"id\":\"110000\"},\"city\":{\"name\":\"北京市\",\"id\":\"110100\"},\"district\":{\"name\":\"东城区\",\"id\":\"110101\"}},\"value\":\"北京,北京市,东城区\",\"key\":\"AddressField_22ARBC4OX14W0\"},{\"label\":\"划小单元负责人\",\"extendValue\":[{\"emplId\":\"541717400120430275\",\"name\":\"俞延涛\",\"selectDeptName\":\"\",\"avatar\":\"https://static.dingtalk.com/media/lQLPD4IxbMcqNbXNAyDNAyCwSvtlNSmDOyoIgaWZAOMfAA_800_800.png_60x60q90.jpg?bizType=avatar\",\"selectDeptId\":\"\"}],\"value\":\"俞延涛\",\"key\":\"InnerContactField_118DS2FCS0GG0\"},{\"label\":\"申报单位\",\"value\":\"阿斯蒂芬\",\"key\":\"TextField_P5R27XAXRJ40\"},{\"label\":\"项目名称\",\"value\":\"气味儿\",\"key\":\"TextField_3Q7JPRBX15W0\"},{\"label\":\"建设内容\",\"value\":\"自行车vac\",\"key\":\"TextField_13QUO8VLZOYK0\"},{\"label\":\"总投资（元）\",\"value\":\"1111\",\"key\":\"MoneyField_227VFO9LLYJK0\"},{\"label\":\"拟申请资金额度（元）\",\"value\":\"1111\",\"key\":\"MoneyField_1KPKELOQSQ1S0\"},{\"label\":\"资金来源\",\"value\":\"1111\",\"key\":\"TextField_BUT12QS7Y7C0\"}],\"rowNumber\":\"TableField_1EJS235ES38G0_11KE4V2VSNYO0\"}]"
+  },
+  {
+    "bizAlias": "",
+    "componentType": "DDSelectField",
+    "extValue": "{\"label\":\"否\",\"key\":\"option_1\"}",
+    "id": "DDSelectField_84WQ31HCZSS0",
+    "name": "是否需要在这一步手动终止办事",
+    "value": "否"
+  }
+]

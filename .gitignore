@@ -1,2 +1,2 @@
-.jbeval/**
-.idea/**
+.idea
+.venv

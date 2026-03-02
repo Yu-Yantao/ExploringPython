@@ -1,0 +1,21 @@
+{
+  "algorithm": "svm",
+  "task_type": "classification",
+  "hyper_params": {
+    "kernel": "rbf"
+  },
+  "data_source": "builtin:iris",
+  "train_samples": 120,
+  "test_samples": 30,
+  "features": 4,
+  "feature_names": [
+    "sepal length (cm)",
+    "sepal width (cm)",
+    "petal length (cm)",
+    "petal width (cm)"
+  ],
+  "test_accuracy": 1.0,
+  "train_time_seconds": 0.001,
+  "model_path": ".\\output\\model.pkl",
+  "test_data_path": ".\\output\\test_data.npz"
+}
