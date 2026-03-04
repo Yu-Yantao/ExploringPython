@@ -1,0 +1,90 @@
+{
+  "数据与路径": {
+    "--data_path": {
+      "type": "str",
+      "item_type": "str",
+      "label": "数据路径",
+      "require": 0,
+      "choice": [],
+      "range": "",
+      "default": "",
+      "placeholder": "",
+      "describe": "训练用 CSV 路径，留空则使用内置数据集",
+      "editable": 1
+    },
+    "--builtin_dataset": {
+      "type": "str",
+      "item_type": "str",
+      "label": "内置数据集",
+      "require": 0,
+      "choice": [],
+      "range": "",
+      "default": "iris",
+      "placeholder": "",
+      "describe": "仅当数据路径为空时生效，如 iris/diabetes等",
+      "editable": 1
+    },
+    "--target_column": {
+      "type": "str",
+      "item_type": "str",
+      "label": "目标列名",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": "target",
+      "placeholder": "",
+      "describe": "CSV 中标签列的列名",
+      "editable": 1
+    },
+    "--test_size": {
+      "type": "float",
+      "item_type": "str",
+      "label": "测试集比例",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": "0.2",
+      "placeholder": "",
+      "describe": "测试集占比，0~1之间",
+      "editable": 1
+    },
+    "--output_dir": {
+      "type": "str",
+      "item_type": "str",
+      "label": "输出目录",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": "/mnt/admin/output",
+      "placeholder": "",
+      "describe": "模型、测试集和元数据的输出目录",
+      "editable": 1
+    }
+  },
+  "算法参数": {
+    "--n_estimators": {
+      "type": "int",
+      "item_type": "str",
+      "label": "迭代轮数",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": 100,
+      "placeholder": "",
+      "describe": "提升树的数量",
+      "editable": 1
+    },
+    "--max_depth": {
+      "type": "int",
+      "item_type": "str",
+      "label": "最大深度",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": 3,
+      "placeholder": "",
+      "describe": "每棵提升树的最大深度",
+      "editable": 1
+    }
+  }
+}

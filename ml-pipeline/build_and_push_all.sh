@@ -24,6 +24,7 @@ MODULES=(
     "algo-adaboost:algo-adaboost"
     "algo-linear-regression:algo-linear-regression"
     "algo-ridge:algo-ridge"
+    "model-serving:ml-model-serving"
 )
 
 echo "========== 登录 Harbor =========="

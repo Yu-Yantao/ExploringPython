@@ -148,6 +148,33 @@ def load_builtin_as_df(name):
     return df
 
 
+# ========== 类别特征编码 ==========
+# 机器学习算法只认识数字，如果数据里有 "Male"/"Female" 或者 "A"/"B"，需要变成 0, 1, 2...
+
+def encode_categorical_features(df):
+    """
+    将字符串（Object）类型的列转换为数字（Label Encoding）
+    返回转换后的 df 和编码映射字典（方便后续还原或查看）
+    """
+    from sklearn.preprocessing import LabelEncoder
+    encoding_maps = {}
+
+    # 找到所有的 object 或 string 类型的列
+    cat_cols = df.select_dtypes(include=['object', 'string']).columns.tolist()
+
+    for col in cat_cols:
+        le = LabelEncoder()
+        # 强制转为字符串以防万一（此时缺失值应该已被处理）
+        df[col] = df[col].astype(str)
+        df[col] = le.fit_transform(df[col])
+        
+        # 记录映射关系，比如 {'Male': 1, 'Female': 0}
+        mapping = {str(k): int(v) for k, v in zip(le.classes_, range(len(le.classes_)))}
+        encoding_maps[col] = mapping
+
+    return df, encoding_maps
+
+
 # ========== 主流程 ==========
 
 def parse_args():
@@ -191,6 +218,10 @@ def main():
 
     print(f"原始数据: {df.shape[0]} 行 x {df.shape[1]} 列")
     print(f"目标列: {args.target_column}")
+
+    # 将常见的缺失值占位符替换为真实的 NaN（专门处理像糖尿病数据集里的 "?"）
+    df = df.replace(["?", "None", "Unknown", ""], np.nan)
+
     print(f"缺失值统计:\n{df.isnull().sum().to_string()}")
 
     # 2. 处理缺失值
@@ -198,6 +229,10 @@ def main():
     df = handle_missing_values(df, args.missing_strategy)
     after_rows = len(df)
     print(f"\n缺失值处理 ({args.missing_strategy}): {before_rows} 行 → {after_rows} 行")
+
+    # 2.5 类别特征编码（文字转数字）
+    df, encoding_maps = encode_categorical_features(df)
+    print(f"类别特征编码: 处理了 {len(encoding_maps)} 个文本列")
 
     # 3. 处理异常值
     df = handle_outliers(df, args.target_column, args.outlier_method)
@@ -231,6 +266,7 @@ def main():
         "missing_strategy": args.missing_strategy,
         "outlier_method": args.outlier_method,
         "scale_method": args.scale_method,
+        "encoding_maps": encoding_maps,
         "scale_params": {k: {sk: float(sv) for sk, sv in v.items() if sk != "method"} | {"method": v["method"]}
                          for k, v in scale_params.items()},
         "test_size": args.test_size,

@@ -1,0 +1,115 @@
+{
+  "数据与路径": {
+    "--data_path": {
+      "type": "str",
+      "item_type": "str",
+      "label": "原始数据路径",
+      "require": 0,
+      "choice": [],
+      "range": "",
+      "default": "",
+      "placeholder": "",
+      "describe": "原始 CSV 路径，留空则使用内置数据集",
+      "editable": 1
+    },
+    "--builtin_dataset": {
+      "type": "str",
+      "item_type": "str",
+      "label": "内置数据集",
+      "require": 0,
+      "choice": [],
+      "range": "",
+      "default": "iris",
+      "placeholder": "",
+      "describe": "仅当数据路径为空时生效",
+      "editable": 1
+    },
+    "--target_column": {
+      "type": "str",
+      "item_type": "str",
+      "label": "目标列名",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": "target",
+      "placeholder": "",
+      "describe": "CSV 中标签列的列名",
+      "editable": 1
+    },
+    "--test_size": {
+      "type": "float",
+      "item_type": "str",
+      "label": "测试集比例",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": "0.2",
+      "placeholder": "",
+      "describe": "测试集占比，0~1之间",
+      "editable": 1
+    },
+    "--output_dir": {
+      "type": "str",
+      "item_type": "str",
+      "label": "输出目录",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": "/mnt/admin/preprocess",
+      "placeholder": "",
+      "describe": "处理后的数据输出目录",
+      "editable": 1
+    }
+  },
+  "预处理策略": {
+    "--missing_strategy": {
+      "type": "str",
+      "item_type": "str",
+      "label": "缺失值处理策略",
+      "require": 1,
+      "choice": [
+        "drop",
+        "mean",
+        "median",
+        "mode",
+        "none"
+      ],
+      "range": "",
+      "default": "median",
+      "placeholder": "",
+      "describe": "空值的处理方式",
+      "editable": 1
+    },
+    "--scale_method": {
+      "type": "str",
+      "item_type": "str",
+      "label": "标准化方法",
+      "require": 1,
+      "choice": [
+        "standard",
+        "minmax",
+        "none"
+      ],
+      "range": "",
+      "default": "standard",
+      "placeholder": "",
+      "describe": "特征缩放方式",
+      "editable": 1
+    },
+    "--outlier_method": {
+      "type": "str",
+      "item_type": "str",
+      "label": "异常值处理",
+      "require": 1,
+      "choice": [
+        "clip",
+        "none"
+      ],
+      "range": "",
+      "default": "none",
+      "placeholder": "",
+      "describe": "极端值的处理方式",
+      "editable": 1
+    }
+  }
+}

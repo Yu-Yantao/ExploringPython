@@ -19,6 +19,7 @@ TASK_TYPE = "classification"
 def load_builtin_dataset(name):
     """加载 sklearn 内置数据集"""
     from sklearn import datasets
+
     loaders = {
         "iris": datasets.load_iris,
         "wine": datasets.load_wine,
@@ -68,9 +69,7 @@ def main():
         X, y, feature_names = load_builtin_dataset(args.builtin_dataset)
         data_source = f"builtin:{args.builtin_dataset}"
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=args.test_size, random_state=42
-    )
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=args.test_size, random_state=42)
 
     model = create_model(args)
     start = time.time()

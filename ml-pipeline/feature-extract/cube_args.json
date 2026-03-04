@@ -1,0 +1,112 @@
+{
+  "数据与路径": {
+    "--train_path": {
+      "type": "str",
+      "item_type": "str",
+      "label": "训练集路径",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": "/mnt/admin/preprocess/train.csv",
+      "placeholder": "",
+      "describe": "预处理后的训练集 CSV 路径",
+      "editable": 1
+    },
+    "--test_path": {
+      "type": "str",
+      "item_type": "str",
+      "label": "测试集路径",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": "/mnt/admin/preprocess/test.csv",
+      "placeholder": "",
+      "describe": "预处理后的测试集 CSV 路径",
+      "editable": 1
+    },
+    "--target_column": {
+      "type": "str",
+      "item_type": "str",
+      "label": "目标列名",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": "target",
+      "placeholder": "",
+      "describe": "CSV 中标签列的列名",
+      "editable": 1
+    },
+    "--output_dir": {
+      "type": "str",
+      "item_type": "str",
+      "label": "输出目录",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": "/mnt/admin/features",
+      "placeholder": "",
+      "describe": "提取特征后的数据输出目录",
+      "editable": 1
+    }
+  },
+  "特征抽取参数": {
+    "--method": {
+      "type": "str",
+      "item_type": "str",
+      "label": "抽取方法",
+      "require": 1,
+      "choice": [
+        "variance",
+        "correlation",
+        "mutual_info",
+        "select_k_best",
+        "pca",
+        "none"
+      ],
+      "range": "",
+      "default": "select_k_best",
+      "placeholder": "",
+      "describe": "特征选择的方法",
+      "editable": 1
+    },
+    "--top_k": {
+      "type": "int",
+      "item_type": "str",
+      "label": "保留特征数",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": 0,
+      "placeholder": "",
+      "describe": "保留几个特征（0表示自动取一半）",
+      "editable": 1
+    },
+    "--variance_threshold": {
+      "type": "float",
+      "item_type": "str",
+      "label": "方差阈值",
+      "require": 0,
+      "choice": [],
+      "range": "",
+      "default": 0.01,
+      "placeholder": "",
+      "describe": "仅方差过滤生效，低于此方差的列会被删除",
+      "editable": 1
+    },
+    "--task_type": {
+      "type": "str",
+      "item_type": "str",
+      "label": "任务类型",
+      "require": 1,
+      "choice": [
+        "classification",
+        "regression"
+      ],
+      "range": "",
+      "default": "classification",
+      "placeholder": "",
+      "describe": "分类还是回归任务",
+      "editable": 1
+    }
+  }
+}

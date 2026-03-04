@@ -20,6 +20,7 @@ ml-pipeline/
 ├── algo-adaboost/                 # 算法：AdaBoost
 ├── algo-linear-regression/        # 算法：线性回归
 ├── algo-ridge/                    # 算法：岭回归
+├── model-serving/                 # 通用模型发布服务
 ├── build_and_push_all.sh          # 一键构建推送所有镜像
 ├── cleanup_old_images.sh          # 清理旧镜像
 └── README.md
@@ -55,7 +56,7 @@ ml-pipeline/
 | `--builtin_dataset`  | iris                  | 内置数据集：iris / wine / breast_cancer / digits / diabetes |
 | `--target_column`    | target                | 目标列名                                                  |
 | `--test_size`        | 0.2                   | 测试集比例                                                 |
-| `--missing_strategy` | median                | 缺失值：drop / mean / median / mode / none               |
+| `--missing_strategy` | median                | 缺失值：drop / mean / median / mode / none                |
 | `--scale_method`     | standard              | 标准化：standard / minmax / none                          |
 | `--outlier_method`   | none                  | 异常值：clip / none                                       |
 | `--output_dir`       | /mnt/admin/preprocess | 输出目录                                                  |
@@ -70,7 +71,7 @@ ml-pipeline/
 
 读取预处理后的数据 → 筛选最有用的特征 → 输出精简后的数据。
 
-| 方法          | `--method` 值    | 说明                    |
+| 方法          | `--method` 值    | 说明                   |
 |-------------|-----------------|----------------------|
 | 方差过滤        | `variance`      | 去掉几乎不变的特征            |
 | 相关性过滤       | `correlation`   | 保留和目标关系最大的 K 个特征     |
@@ -87,33 +88,33 @@ ml-pipeline/
 
 ### 分类算法（8 种）
 
-| 序号 | 目录                         | 镜像名                       | 算法     | 特有参数                              |
-|----|----------------------------|---------------------------|--------|-----------------------------------|
-| 1  | `algo-decision-tree/`      | `algo-decision-tree:v1`   | 决策树    | `--max_depth`                     |
-| 2  | `algo-random-forest/`      | `algo-random-forest:v1`   | 随机森林   | `--n_estimators` `--max_depth`    |
-| 3  | `algo-logistic-regression/`| `algo-logistic-regression:v1` | 逻辑回归 | `--max_iter`                      |
-| 4  | `algo-knn/`                | `algo-knn:v1`             | K近邻    | `--n_neighbors`                   |
-| 5  | `algo-svm/`                | `algo-svm:v1`             | 支持向量机  | `--kernel`                        |
-| 6  | `algo-naive-bayes/`        | `algo-naive-bayes:v1`     | 朴素贝叶斯  | （无额外参数）                           |
-| 7  | `algo-gradient-boosting/`  | `algo-gradient-boosting:v1`| 梯度提升  | `--n_estimators` `--max_depth`    |
-| 8  | `algo-adaboost/`           | `algo-adaboost:v1`        | AdaBoost| `--n_estimators`                  |
+| 序号 | 目录                          | 镜像名                           | 算法       | 特有参数                           |
+|----|-----------------------------|-------------------------------|----------|--------------------------------|
+| 1  | `algo-decision-tree/`       | `algo-decision-tree:v1`       | 决策树      | `--max_depth`                  |
+| 2  | `algo-random-forest/`       | `algo-random-forest:v1`       | 随机森林     | `--n_estimators` `--max_depth` |
+| 3  | `algo-logistic-regression/` | `algo-logistic-regression:v1` | 逻辑回归     | `--max_iter`                   |
+| 4  | `algo-knn/`                 | `algo-knn:v1`                 | K近邻      | `--n_neighbors`                |
+| 5  | `algo-svm/`                 | `algo-svm:v1`                 | 支持向量机    | `--kernel`                     |
+| 6  | `algo-naive-bayes/`         | `algo-naive-bayes:v1`         | 朴素贝叶斯    | （无额外参数）                        |
+| 7  | `algo-gradient-boosting/`   | `algo-gradient-boosting:v1`   | 梯度提升     | `--n_estimators` `--max_depth` |
+| 8  | `algo-adaboost/`            | `algo-adaboost:v1`            | AdaBoost | `--n_estimators`               |
 
 ### 回归算法（2 种）
 
-| 序号 | 目录                         | 镜像名                       | 算法   | 特有参数     |
-|----|----------------------------|---------------------------|------|----------|
-| 9  | `algo-linear-regression/`  | `algo-linear-regression:v1`| 线性回归 | （无额外参数） |
-| 10 | `algo-ridge/`              | `algo-ridge:v1`           | 岭回归  | `--alpha` |
+| 序号 | 目录                        | 镜像名                         | 算法   | 特有参数      |
+|----|---------------------------|-----------------------------|------|-----------|
+| 9  | `algo-linear-regression/` | `algo-linear-regression:v1` | 线性回归 | （无额外参数）   |
+| 10 | `algo-ridge/`             | `algo-ridge:v1`             | 岭回归  | `--alpha` |
 
 ### 所有算法的通用参数
 
-| 参数                  | 默认值               | 说明                 |
-|---------------------|-------------------|--------------------|
-| `--data_path`       | 空                 | CSV 路径（留空用内置数据集）   |
+| 参数                  | 默认值               | 说明                           |
+|---------------------|-------------------|------------------------------|
+| `--data_path`       | 空                 | CSV 路径（留空用内置数据集）             |
 | `--builtin_dataset` | iris / diabetes   | 内置数据集（分类默认iris，回归默认diabetes） |
-| `--target_column`   | target            | 目标列名               |
-| `--test_size`       | 0.2               | 测试集比例              |
-| `--output_dir`      | /mnt/admin/output | 输出目录               |
+| `--target_column`   | target            | 目标列名                         |
+| `--test_size`       | 0.2               | 测试集比例                        |
+| `--output_dir`      | /mnt/admin/output | 输出目录                         |
 
 ### 输出文件（所有算法统一）
 
@@ -129,9 +130,23 @@ ml-pipeline/
 
 ---
 
-## 五、模型发布（iris-serving 目录）
+## 五、模型发布（model-serving/）
 
-位于 `../iris-serving/` 目录，使用 FastAPI 加载 `.pkl` 模型并提供 HTTP 预测接口。
+镜像名：`ml-model-serving:v1`
+
+通用模型推理服务，基于 FastAPI 构建。能够加载上述 10 种算法训练出的任意 `model.pkl` 文件，并对外提供 HTTP 预测接口。
+
+在 cube-studio 部署时，需将模型的实际路径（PVC 挂载路径）通过环境变量或参数传入。
+
+### API 接口示例
+
+部署成功后，可发送 POST 请求到 `/predict` 接口进行预测：
+
+```json
+{
+    "features": [[5.1, 3.5, 1.4, 0.2]]
+}
+```
 
 ---
 
