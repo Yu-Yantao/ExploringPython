@@ -17,10 +17,9 @@ def get_base_param(type_str, label, default, describe, choice=None, require=0):
 
 def get_train_common_params():
     return {
-        "--data_path": get_base_param("str", "数据路径", "", "训练用 CSV 路径，留空则使用内置数据集"),
-        "--builtin_dataset": get_base_param("str", "内置数据集", "iris", "仅当数据路径为空时生效，如 iris/diabetes等"),
+        "--train_path": get_base_param("str", "训练集路径", "/mnt/admin/features/train.csv", "预处理/特征提取后的训练集 CSV 路径", require=1),
+        "--test_path": get_base_param("str", "测试集路径", "/mnt/admin/features/test.csv", "预处理/特征提取后的测试集 CSV 路径", require=1),
         "--target_column": get_base_param("str", "目标列名", "target", "CSV 中标签列的列名", require=1),
-        "--test_size": get_base_param("float", "测试集比例", "0.2", "测试集占比，0~1之间", require=1),
         "--output_dir": get_base_param("str", "输出目录", "/mnt/admin/output", "模型、测试集和元数据的输出目录", require=1)
     }
 
@@ -115,10 +114,13 @@ def generate_jsons():
             }
         }
     }
-    
-    # 修改回归算法的默认数据集
-    configs["algo-linear-regression"]["数据与路径"]["--builtin_dataset"]["default"] = "diabetes"
-    configs["algo-ridge"]["数据与路径"]["--builtin_dataset"]["default"] = "diabetes"
+
+    configs["model-evaluate"] = {
+        "评估参数": {
+            "--model_dir": get_base_param("str", "模型目录", "/mnt/admin/output", "包含 model.pkl 和 test_data.npz 的上游训练节点输出目录", require=1),
+            "--output_dir": get_base_param("str", "输出目录", "", "评估报告输出目录（留空则直接输出到 model_dir 下）")
+        }
+    }
 
     for module_dir, config in configs.items():
         dir_path = os.path.join(base_dir, module_dir)

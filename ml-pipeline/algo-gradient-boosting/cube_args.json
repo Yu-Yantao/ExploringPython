@@ -1,27 +1,27 @@
 {
   "数据与路径": {
-    "--data_path": {
+    "--train_path": {
       "type": "str",
       "item_type": "str",
-      "label": "数据路径",
-      "require": 0,
+      "label": "训练集路径",
+      "require": 1,
       "choice": [],
       "range": "",
-      "default": "",
+      "default": "/mnt/admin/features/train.csv",
       "placeholder": "",
-      "describe": "训练用 CSV 路径，留空则使用内置数据集",
+      "describe": "预处理/特征提取后的训练集 CSV 路径",
       "editable": 1
     },
-    "--builtin_dataset": {
+    "--test_path": {
       "type": "str",
       "item_type": "str",
-      "label": "内置数据集",
-      "require": 0,
+      "label": "测试集路径",
+      "require": 1,
       "choice": [],
       "range": "",
-      "default": "iris",
+      "default": "/mnt/admin/features/test.csv",
       "placeholder": "",
-      "describe": "仅当数据路径为空时生效，如 iris/diabetes等",
+      "describe": "预处理/特征提取后的测试集 CSV 路径",
       "editable": 1
     },
     "--target_column": {
@@ -34,18 +34,6 @@
       "default": "target",
       "placeholder": "",
       "describe": "CSV 中标签列的列名",
-      "editable": 1
-    },
-    "--test_size": {
-      "type": "float",
-      "item_type": "str",
-      "label": "测试集比例",
-      "require": 1,
-      "choice": [],
-      "range": "",
-      "default": "0.2",
-      "placeholder": "",
-      "describe": "测试集占比，0~1之间",
       "editable": 1
     },
     "--output_dir": {

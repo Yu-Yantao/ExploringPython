@@ -9,27 +9,10 @@ import time
 
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
 ALGORITHM_NAME = "linear_regression"
 TASK_TYPE = "regression"
-
-
-def load_builtin_dataset(name):
-    """加载 sklearn 内置数据集"""
-    from sklearn import datasets
-    loaders = {
-        "iris": datasets.load_iris,
-        "wine": datasets.load_wine,
-        "breast_cancer": datasets.load_breast_cancer,
-        "digits": datasets.load_digits,
-        "diabetes": datasets.load_diabetes,
-    }
-    if name not in loaders:
-        raise ValueError(f"未知内置数据集: {name}，可选: {list(loaders.keys())}")
-    data = loaders[name]()
-    return data.data, data.target, getattr(data, "feature_names", None)
 
 
 def load_csv_dataset(path, target_column):
@@ -45,55 +28,72 @@ def load_csv_dataset(path, target_column):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="线性回归训练")
-    parser.add_argument("--data_path", type=str, default="", help="CSV 数据文件路径（留空则用内置数据集）")
-    parser.add_argument("--builtin_dataset", type=str, default="diabetes", help="内置数据集名称")
+    parser.add_argument("--train_path", type=str, required=True, help="上游传来的训练集 CSV 路径")
+    parser.add_argument("--test_path", type=str, required=True, help="上游传来的测试集 CSV 路径")
     parser.add_argument("--target_column", type=str, default="target", help="CSV 目标列名")
-    parser.add_argument("--test_size", type=float, default=0.2, help="测试集比例")
     parser.add_argument("--output_dir", type=str, default="/mnt/admin/output", help="输出目录")
     return parser.parse_args()
 
 
-def create_model(args):
-    return LinearRegression()
+def create_model(hyper_params):
+    return LinearRegression(**hyper_params)
 
 
 def main():
     args = parse_args()
+    hyper_params = {}
 
-    if args.data_path:
-        X, y, feature_names = load_csv_dataset(args.data_path, args.target_column)
-        data_source = args.data_path
-    else:
-        X, y, feature_names = load_builtin_dataset(args.builtin_dataset)
-        data_source = f"builtin:{args.builtin_dataset}"
+    print("=" * 40)
+    print(f"========== 启动 {ALGORITHM_NAME} 训练 ==========")
+    print("=" * 40)
+    print("【基础参数配置】")
+    print(f"  - 训练集路径 (train_path): {args.train_path}")
+    print(f"  - 测试集路径 (test_path) : {args.test_path}")
+    print(f"  - 目标列名   (target_col): {args.target_column}")
+    print(f"  - 输出目录   (output_dir): {args.output_dir}")
+    
+    if hyper_params:
+        print("\n【算法超参数配置】")
+        for k, v in hyper_params.items():
+            print(f"  - {k}: {v}")
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=args.test_size, random_state=42
-    )
+    print("\n========== [1/4] 开始加载数据 ==========")
+    X_train, y_train, feature_names = load_csv_dataset(args.train_path, args.target_column)
+    X_test, y_test, _ = load_csv_dataset(args.test_path, args.target_column)
 
-    model = create_model(args)
+    print(f"  - 训练集样本数: {X_train.shape[0]} 行, 特征维度: {X_train.shape[1]} 列")
+    print(f"  - 测试集样本数: {X_test.shape[0]} 行, 特征维度: {X_test.shape[1]} 列")
+
+    print("\n========== [2/4] 开始构建并训练模型 ==========")
+    model = create_model(hyper_params)
     start = time.time()
     model.fit(X_train, y_train)
     elapsed = round(time.time() - start, 3)
+    print(f"  - 训练完成！耗时: {elapsed} 秒")
 
+    print("\n========== [3/4] 模型简单验证 ==========")
     score = model.score(X_test, y_test)
-    metric_name = "r2"
+    metric_name = "accuracy" if TASK_TYPE == "classification" else "r2"
+    print(f"  - 测试集 {metric_name}: {round(score, 4)}")
 
+    print("\n========== [4/4] 保存模型和元数据 ==========")
     os.makedirs(args.output_dir, exist_ok=True)
     model_path = os.path.join(args.output_dir, "model.pkl")
     joblib.dump(model, model_path)
+    print(f"  - 模型已保存至: {model_path}")
 
     test_data_path = os.path.join(args.output_dir, "test_data.npz")
     np.savez(test_data_path, X_test=X_test, y_test=y_test)
+    print(f"  - 测试数据(npz)已保存至: {test_data_path}")
 
     metadata = {
         "algorithm": ALGORITHM_NAME,
         "task_type": TASK_TYPE,
-        "hyper_params": {},
-        "data_source": data_source,
+        "hyper_params": hyper_params,
+        "data_source": f"train:{args.train_path}, test:{args.test_path}",
         "train_samples": X_train.shape[0],
         "test_samples": X_test.shape[0],
-        "features": X.shape[1],
+        "features": X_train.shape[1],
         "feature_names": list(feature_names) if feature_names is not None else None,
         f"test_{metric_name}": round(score, 4),
         "train_time_seconds": elapsed,

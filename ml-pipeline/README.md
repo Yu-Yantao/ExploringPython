@@ -20,6 +20,7 @@ ml-pipeline/
 ├── algo-adaboost/                 # 算法：AdaBoost
 ├── algo-linear-regression/        # 算法：线性回归
 ├── algo-ridge/                    # 算法：岭回归
+├── model-evaluate/                # 通用模型评估模块
 ├── model-serving/                 # 通用模型发布服务
 ├── build_and_push_all.sh          # 一键构建推送所有镜像
 ├── cleanup_old_images.sh          # 清理旧镜像
@@ -124,9 +125,20 @@ ml-pipeline/
 
 ---
 
-## 四、模型评估模块（待开发）
+## 四、模型评估模块（model-evaluate/）
 
-计划功能：读取模型 + 测试集 → 预测 → 计算指标（accuracy / F1 / MSE / R² 等） → 输出评估报告 JSON。
+镜像名：`ml-model-evaluate:v1`
+
+这是一个**通用**的评估节点。它内部实现了基于 `task_type`（分类/回归）的路由机制：
+1. 它会读取上游训练节点传过来的 `train_metadata.json`，识别当前的算法是解决什么问题的。
+2. 自动加载 `model.pkl` 和预留的测试集 `test_data.npz`。
+3. 执行预测，并调用对应的评估逻辑（分类算准确率/F1，回归算 MSE/MAE 等）。
+4. 输出统一的 `evaluate_report.json`。
+
+| 参数                  | 默认值               | 说明                 |
+|---------------------|-------------------|--------------------|
+| `--model_dir`       | `/mnt/admin/output` | 必填！包含模型和测试集的目录路径 |
+| `--output_dir`      | 空                 | 留空则默认把报告输出到 `model_dir` 下 |
 
 ---
 

@@ -1,0 +1,28 @@
+{
+  "评估参数": {
+    "--model_dir": {
+      "type": "str",
+      "item_type": "str",
+      "label": "模型目录",
+      "require": 1,
+      "choice": [],
+      "range": "",
+      "default": "/mnt/admin/output",
+      "placeholder": "",
+      "describe": "包含 model.pkl 和 test_data.npz 的上游训练节点输出目录",
+      "editable": 1
+    },
+    "--output_dir": {
+      "type": "str",
+      "item_type": "str",
+      "label": "输出目录",
+      "require": 0,
+      "choice": [],
+      "range": "",
+      "default": "",
+      "placeholder": "",
+      "describe": "评估报告输出目录（留空则直接输出到 model_dir 下）",
+      "editable": 1
+    }
+  }
+}

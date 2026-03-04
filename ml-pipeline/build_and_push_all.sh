@@ -24,6 +24,7 @@ MODULES=(
     "algo-adaboost:algo-adaboost"
     "algo-linear-regression:algo-linear-regression"
     "algo-ridge:algo-ridge"
+    "model-evaluate:ml-model-evaluate"
     "model-serving:ml-model-serving"
 )
 
